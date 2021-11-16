@@ -1,0 +1,21 @@
+1) Стартер  - проект, который содержит в resources/META-INF содержит файл spring.factories - там прописывается
+путь, где хранится файл спринг-конфигурации, в которой декларируются все бины, что стартет должен привнести в проект.
+(org.springframework.boot.autoconfigure.EnableAutoConfiguration=ru.polovtsev.StarterConfiguration) - пример
+2)@SpringBootApplication внутри себя сожержит @EnableAutoConfiguration, которая в свою очередь сожержит
+@Import({EnableAutoConfigurationImportSelector.class}) - этот класс сканирует classpath на предмет стартеров, посредством
+класса SpringFactoriesLoader ищет в них spring.factories, который проверяет на налчие
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=...
+Центральная зависимость бута - spring-boot-autoconfigure.jar в своем spring.factories на месте
+org.springframework.boot.autoconfigure.EnableAutoConfiguration= ... имеет огромный список всевозможных записей вроде
+org.springframework.boot.autoconfigure.aop.AopAutoConfiguration или org.springframework.boot.autoconfigure.amqp.RabbitAutoCOnfiguration
+всего 90 с чем то, плюс многие из этих конфигураций под капотом имеют тоже importSelector, который подтягивает еще кучу более
+подробных захардкоженных конфигураций всех возможных вариантов реализации базовой конфигурации (например, для автоконфигурации кэша
+подтгиваются конфигурации его реализаций: EhCacheAutoconfiguration.class, RedisCacheAutoconfiguration.class и тд).
+Это для уменьшения количества стартеров (их логически объединили, чтоб не писать миллион на все варианты). То есть конфигурации
+приходят, как со стороны (подключенных внешних стартеров), так и из центральной зависимости бута
+org.springframework.boot.autoconfigure, где прописаны основные, по мнению разработчиков, конфигурации.
+3) Далее эти конфигурации фильтруются при помощи @ConditionalOn.. аннотаций.
+Можно написать свою аннтоацию @ConditionalOn... и пометить ей конфигурацию или конкретный бин, для этого нужно внутри
+аннотации необходимо указать аннотацию @Conditional(YourConditionalLogic.class), где YourConditionalLogic - класс,
+реализующий интерфейс Condition и переопределяюший единственный его метод 'matches',
+вовращаеющий boolean (выполнилось условие или нет)
