@@ -2,6 +2,8 @@ package ru.polovtsev.springBootReaper;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class SpringBootReaperApplication {
@@ -16,6 +18,12 @@ public class SpringBootReaperApplication {
         builder.headless(false);
         builder.run(args);
 //		ConfigurableApplicationContext context = SpringApplication.run(SpringBootReaperApplication.class, args);
+    }
+
+    @Bean
+    public ApplicationListener applicationListener() {
+        return (event -> System.out.println("Now you can see 'overriding' of starter's applicationListener bean" +
+                " by manually written bean of class ApplicationListener, current event = " + event));
     }
 
 }
