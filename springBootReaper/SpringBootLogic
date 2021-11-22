@@ -34,3 +34,9 @@ org.springframework.boot.autoconfigure, где прописаны основны
 как это требуется. Поскольку как бин такой класс не зарегистрировать - так как он должен отрабатывать до создания бинов,
 то прописываем его в spring.factories:
 org.springframework.context.ApplicationContextInitializer=ru.polovtsev.MyContextInitializer
+6) Если необходимо вклиниться еще раньше - на этапе построения Environment - например, чтобы задать свой дефолтный
+профиль по некоторому условию, который будет принят, если не будет переодпределн позднее, то необходимо использовать
+EnvironmentPostProcessor. Он отрабатывает на этапе, когда еще даже контекст не построен. Аналогично
+ApplicationContextInitilizer'у, необходимо заимплементить интерфейс EnvironmentPostProcessor, переопределить его метод,
+а после прописать в spring.factories:
+org.springframework.boot.env.EnvironmentPostProcessor=ru.polovtsev.MyEnvironmentPostProcessor

@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=ru.polovtsev.StarterConfiguration
 org.springframework.context.ApplicationContextInitializer=ru.polovtsev.RejectProfileAppContextInitializer
+org.springframework.boot.env.EnvironmentPostProcessor=ru.polovtsev.ProfileEnvironmentPostProcessor
