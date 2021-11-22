@@ -3,6 +3,7 @@ package ru.polovtsev.springBootReaper;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
@@ -16,8 +17,7 @@ public class SpringBootReaperApplication {
     public static void main(String[] args) {
         SpringApplicationBuilder builder = new SpringApplicationBuilder(SpringBootReaperApplication.class);
         builder.headless(false);
-        builder.run(args);
-//		ConfigurableApplicationContext context = SpringApplication.run(SpringBootReaperApplication.class, args);
+        ConfigurableApplicationContext context = builder.run(args);
     }
 
     @Bean
